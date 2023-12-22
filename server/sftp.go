@@ -86,7 +86,7 @@ func handleConn(conn net.Conn, config *ssh.ServerConfig, cliArgs *loader.Args) {
 			for req := range in {
 				if req.Type == "subsystem" && string(req.Payload[4:]) == "sftp" {
 					handlers := sftp.Handlers{
-						FileGet:  customFileReader{remoteUrl: cliArgs.RemoteURL},
+						FileGet:  customFileReader{remoteUrl: cliArgs.RemoteURL, clientIP: conn.RemoteAddr().String()},
 						FilePut:  customFileWriter{},
 						FileCmd:  customFileCmder{},
 						FileList: customFileLister{},

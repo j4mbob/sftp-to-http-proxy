@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -51,13 +52,15 @@ type listerat []os.FileInfo
 
 type customFileLister struct{}
 
-func (l listerat) ListAt(p []os.FileInfo, off int64) (int, error) {
-	copied := copy(p, l[off:])
+func (l listerat) ListAt(f []os.FileInfo, off int64) (int, error) {
+	copied := copy(f, l[off:])
 	return copied, nil
 }
 
+// implement dummy Filelist method which obtains our fake file's "stats" to return them
+// to the client
+
 func (c customFileLister) Filelist(r *sftp.Request) (sftp.ListerAt, error) {
-	log.Printf("DEBUG: method called: %s", r.Method)
 
 	switch r.Method {
 	case "List":
@@ -73,23 +76,40 @@ func (c customFileLister) Filelist(r *sftp.Request) (sftp.ListerAt, error) {
 
 type customFileReader struct {
 	remoteUrl string
+	clientIP  string
 }
 
+// custom Fileread method which goes and fetches the file from the remote URL
+
 func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
-	log.Print("DEBUG: reader called")
+	log.Printf("client %s attempting to get: %s%s", c.clientIP, c.remoteUrl, r.Filepath)
+
+	startTime := time.Now()
 
 	resp, err := http.Get(c.remoteUrl + r.Filepath)
 	if err != nil {
 
-		return nil, err
+		return nil, fmt.Errorf("error %q", err)
+	}
+
+	if resp.StatusCode != 200 {
+		log.Printf("error getting file: %s", resp.Status)
+		defer resp.Body.Close()
+		return nil, errors.New("file not found")
+
 	}
 	defer resp.Body.Close()
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 
-		return nil, err
+		return nil, fmt.Errorf("error: %q", err)
 	}
 
+	// expose duration it took to download the file so we can use it as a performance metric to analysise provisioning times
+	// should we want to
+	finishTime := time.Since(startTime)
+
+	log.Printf("client %s downloaded: %s%s duration: %v", c.clientIP, c.remoteUrl, r.Filepath, finishTime)
 	return bytes.NewReader(data), nil
 }
