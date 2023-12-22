@@ -78,7 +78,7 @@ type customFileReader struct {
 func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
 	log.Print("DEBUG: reader called")
 
-	resp, err := http.Get("http://grafana.networks-util.ask4.net:8080/" + r.Filepath)
+	resp, err := http.Get(c.remoteUrl + r.Filepath)
 	if err != nil {
 
 		return nil, err
