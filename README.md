@@ -1,7 +1,7 @@
 SFTP to HTTP(s) go Proxy
 
 translates sftp client file get requests to http get requests
-
+```
   -listenip string
     	IP for SFTP server to bind to (default "0.0.0.0")
   -listenport string
@@ -20,3 +20,5 @@ translates sftp client file get requests to http get requests
     	ssl private key to use (default "id_rsa")
   -username string
     	username to use for authentication (default "sftp")
+
+```
