@@ -1,6 +1,12 @@
 SFTP to HTTP(s) go Proxy
 
-translates sftp client file get requests to http get requests
+can be used to faciliate ZTP for switches that dont support TFTP and only support SFTP
+
+sets up a real sftp server with custom handlers for operations which allows us to back off requests to a web server
+
+this works by tricking the sftp client into believing the file they requested is on the sftp servers local file system. the proxy handles the request and pulls the file 
+from a remote http(s) server and serves up the file over the established SFTP session back to the client
+
 ```
   -listenip string
     	IP for SFTP server to bind to (default "0.0.0.0")
