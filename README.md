@@ -32,10 +32,10 @@ from a remote http(s) server and serves up the file over the established SFTP se
 logs to stdout and includes status of file requests and duration transfers took so we get some visability over what the switch is doing:
 
 ```
-2023/12/22 13:17:51 sftp proxy listening on 0.0.0.0:2022
-2023/12/22 13:18:04 successful login from: [::1]:55032
-2023/12/22 13:18:07 client [::1]:55032 attempting to get: http://grafana.networks-util.ask4.net:8080/test.file
-2023/12/22 13:18:07 error getting file: 404 Not Found
-2023/12/22 13:18:25 client [::1]:55032 attempting to get: http://grafana.networks-util.ask4.net:8080/S5730HI-V200R019C00SPC500.cc
-2023/12/22 13:22:57 client [::1]:55032 downloaded: http://grafana.networks-util.ask4.net:8080/S5730HI-V200R019C00SPC500.cc duration: 4m31.636666625s
+2024/01/02 10:32:28 loading JSON config: config.json
+2024/01/02 10:32:28 sending application metrics to remote pyroscope host: http://grafana.networks-util.ask4.net:4040
+2024/01/02 10:32:28 sftp proxy listening on 10.20.58.1:2122
+2024/01/02 10:32:39 successful login from: 10.20.58.2:65427
+2024/01/02 10:32:43 client 10.20.58.2:65427 attempting to get: http://grafana.networks-util.ask4.net:8080/S5735-L-V2_V600R022C10SPC500.cc
+2024/01/02 10:33:28 proxy downloaded: http://grafana.networks-util.ask4.net:8080/S5735-L-V2_V600R022C10SPC500.cc for client 10.20.58.2:65427 duration: 44.496820739s
 ```
