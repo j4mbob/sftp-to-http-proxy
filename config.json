@@ -1,0 +1,10 @@
+{
+        "listenip": "10.20.58.1",
+        "listenport": "2122",
+        "username": "lms",
+        "password": "lms",
+        "sslkey": "/etc/ssh/ssh_host_rsa_key",
+        "remoteurl": "http://grafana.networks-util.ask4.net:8080",
+        "pyroscope": true,
+        "pyroscopehost": "http://grafana.networks-util.ask4.net:4040"
+}
