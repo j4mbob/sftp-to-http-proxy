@@ -59,6 +59,7 @@ func createHandlers(remoteUrl string, clientIP string) sftp.Handlers {
 func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *sftp.RequestServer) {
 	for req := range requests {
 		if req.Type == "subsystem" && string(req.Payload[4:]) == "sftp" {
+			req.Reply(true, nil)
 			if err := checkServerState(channel, server); err != nil {
 				log.Printf("SFTP server closed with error: %v\n", err)
 			}

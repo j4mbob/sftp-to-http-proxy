@@ -12,7 +12,7 @@ import (
 
 func Startup() *Args {
 
-	const pidFile = "sftp-proxy.pid"
+	const pidFile = "/run/sftp-proxy.pid"
 
 	implementPID(pidFile)
 

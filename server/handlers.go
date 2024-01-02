@@ -16,7 +16,7 @@ import (
 // custom handlers so we can back commands off to remote http server rather than the local filesystem
 
 // empty file writer and file cmd handlers as we arent supporting any write and file command operations
-// but they need defintions as part of sftp.Handlers
+// but they need implementations as part of sftp.Handlers
 type customFileWriter struct{}
 
 func (c customFileWriter) Filewrite(r *sftp.Request) (io.WriterAt, error) {
@@ -61,7 +61,6 @@ func (l listerat) ListAt(f []os.FileInfo, off int64) (int, error) {
 // to the client
 
 func (c customFileLister) Filelist(r *sftp.Request) (sftp.ListerAt, error) {
-
 	switch r.Method {
 	case "List":
 		var files listerat = []os.FileInfo{&fakeFile{name: "fakefile.txt"}}
@@ -110,6 +109,6 @@ func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
 	// should we want to
 	finishTime := time.Since(startTime)
 
-	log.Printf("client %s downloaded: %s%s duration: %v", c.clientIP, c.remoteUrl, r.Filepath, finishTime)
+	log.Printf("proxy downloaded: %s%s for client %s duration: %v", c.remoteUrl, r.Filepath, c.clientIP, finishTime)
 	return bytes.NewReader(data), nil
 }

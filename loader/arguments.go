@@ -22,7 +22,7 @@ type Args struct {
 func argParse(arguments *Args) {
 
 	listenIp := flag.String("listenip", "0.0.0.0", "IP for SFTP server to bind to")
-	listenPort := flag.String("listenport", "2022", "port for SFTP server to listen on")
+	listenPort := flag.String("listenport", "2122", "port for SFTP server to listen on")
 	userName := flag.String("username", "sftp", "username to use for authentication")
 	password := flag.String("password", "sftp", "password to use for authentication")
 	sslKey := flag.String("sslkey", "id_rsa", "ssl private key to use")
