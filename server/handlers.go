@@ -105,7 +105,7 @@ func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
 		return nil, fmt.Errorf("error: %q", err)
 	}
 
-	// expose duration it took to download the file so we can use it as a performance metric to analysise provisioning times
+	// expose duration it took for the proxy to  download the file so we can use it as a performance metric to analysise provisioning times
 	// should we want to
 	finishTime := time.Since(startTime)
 

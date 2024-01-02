@@ -11,7 +11,6 @@ import (
 )
 
 func StartProxy(cliArgs *loader.Args) {
-
 	sshConfig := setupServer(cliArgs.UserName, cliArgs.Password)
 
 	loadKey(sshConfig, cliArgs.SSLKey)
@@ -23,7 +22,6 @@ func StartProxy(cliArgs *loader.Args) {
 }
 
 func setupServer(userName string, password string) *ssh.ServerConfig {
-
 	sshConfig := &ssh.ServerConfig{
 		PasswordCallback: func(conn ssh.ConnMetadata, enteredPassword []byte) (*ssh.Permissions, error) {
 
@@ -44,7 +42,6 @@ func setupServer(userName string, password string) *ssh.ServerConfig {
 }
 
 func loadKey(config *ssh.ServerConfig, sslKey string) {
-
 	keyBytes, err := os.ReadFile(sslKey)
 	if err != nil {
 		log.Fatal("failed to load private key", err)
@@ -60,7 +57,6 @@ func loadKey(config *ssh.ServerConfig, sslKey string) {
 }
 
 func startListener(listenIP string, listenPort string) net.Listener {
-
 	listener, err := net.Listen("tcp", listenIP+":"+listenPort)
 	if err != nil {
 		log.Printf("failed to bind server: %v", err)
@@ -75,7 +71,6 @@ func startListener(listenIP string, listenPort string) net.Listener {
 }
 
 func acceptConnections(listener net.Listener, sshConfig *ssh.ServerConfig, remoteUrl string) {
-
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

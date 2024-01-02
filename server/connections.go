@@ -30,8 +30,7 @@ func newConnection(conn net.Conn, sshConfig *ssh.ServerConfig, remoteUrl string)
 			log.Printf("could not accept channel: %v\n", err)
 			continue
 		}
-
-		go handleRequests(requests, channel, server)
+		go handleRequests(requests, channel, server, conn)
 	}
 }
 
@@ -56,11 +55,11 @@ func createHandlers(remoteUrl string, clientIP string) sftp.Handlers {
 	}
 }
 
-func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *sftp.RequestServer) {
+func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *sftp.RequestServer, conn net.Conn) {
 	for req := range requests {
 		if req.Type == "subsystem" && string(req.Payload[4:]) == "sftp" {
 			req.Reply(true, nil)
-			if err := checkServerState(channel, server); err != nil {
+			if err := checkServerState(channel, server, conn); err != nil {
 				log.Printf("SFTP server closed with error: %v\n", err)
 			}
 			return
@@ -68,9 +67,10 @@ func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *s
 	}
 }
 
-func checkServerState(channel ssh.Channel, server *sftp.RequestServer) error {
+func checkServerState(channel ssh.Channel, server *sftp.RequestServer, conn net.Conn) error {
 	if err := server.Serve(); err != nil {
 		if err == io.EOF {
+			log.Printf("client %s closed connection", conn.RemoteAddr().String())
 			server.Close()
 			return nil
 		}

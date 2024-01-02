@@ -20,7 +20,6 @@ type Args struct {
 }
 
 func argParse(arguments *Args) {
-
 	listenIp := flag.String("listenip", "0.0.0.0", "IP for SFTP server to bind to")
 	listenPort := flag.String("listenport", "2122", "port for SFTP server to listen on")
 	userName := flag.String("username", "sftp", "username to use for authentication")
@@ -51,7 +50,6 @@ func argParse(arguments *Args) {
 }
 
 func loadConfig(configFile string, arguments *Args) {
-
 	jsonFile, err := os.Open(configFile)
 
 	if err != nil {

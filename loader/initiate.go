@@ -11,7 +11,6 @@ import (
 )
 
 func Startup() *Args {
-
 	const pidFile = "/run/sftp-proxy.pid"
 
 	implementPID(pidFile)
@@ -31,7 +30,6 @@ func Startup() *Args {
 }
 
 func implementPID(pidFile string) {
-
 	if checkPID(pidFile) {
 		log.Fatalf("Another instance of sftp-proxy is already running. Exiting.")
 	}
@@ -70,7 +68,6 @@ func checkPID(pidFile string) bool {
 }
 
 func StartPyroScope(arguments *Args) {
-
 	runtime.SetMutexProfileFraction(5)
 	runtime.SetBlockProfileRate(5)
 
