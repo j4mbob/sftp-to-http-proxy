@@ -1,8 +1,8 @@
 package server
 
 import (
+	"fmt"
 	"io"
-	"log"
 	"net"
 
 	"github.com/pkg/sftp"
@@ -12,7 +12,7 @@ import (
 func newConnection(conn net.Conn, sshConfig *ssh.ServerConfig, remoteUrl string) {
 	sshConn, chans, reqs, err := ssh.NewServerConn(conn, sshConfig)
 	if err != nil {
-		log.Printf("failed to handshake: %v\n", err)
+		fmt.Printf("failed to handshake: %v\n", err)
 		return
 	}
 	defer sshConn.Close()
@@ -27,7 +27,7 @@ func newConnection(conn net.Conn, sshConfig *ssh.ServerConfig, remoteUrl string)
 
 		channel, requests, server, err := handleNewChannel(newChannel, remoteUrl, conn)
 		if err != nil {
-			log.Printf("could not accept channel: %v\n", err)
+			fmt.Printf("could not accept channel: %v\n", err)
 			continue
 		}
 		go handleRequests(requests, channel, server, conn)
@@ -60,7 +60,7 @@ func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *s
 		if req.Type == "subsystem" && string(req.Payload[4:]) == "sftp" {
 			req.Reply(true, nil)
 			if err := checkServerState(channel, server, conn); err != nil {
-				log.Printf("SFTP server closed with error: %v\n", err)
+				fmt.Printf("SFTP server closed with error: %v\n", err)
 			}
 			return
 		}
@@ -70,7 +70,7 @@ func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *s
 func checkServerState(channel ssh.Channel, server *sftp.RequestServer, conn net.Conn) error {
 	if err := server.Serve(); err != nil {
 		if err == io.EOF {
-			log.Printf("client %s closed connection", conn.RemoteAddr().String())
+			fmt.Printf("client %s closed connection", conn.RemoteAddr().String())
 			server.Close()
 			return nil
 		}

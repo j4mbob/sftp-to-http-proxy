@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -21,7 +21,7 @@ func Startup() *Args {
 
 	if arguments.Pyroscope {
 
-		log.Printf("sending application metrics to remote pyroscope host: %s", arguments.PyroscopeHost)
+		fmt.Printf("sending application metrics to remote pyroscope host: %s", arguments.PyroscopeHost)
 		StartPyroScope(arguments)
 
 	}
@@ -31,12 +31,14 @@ func Startup() *Args {
 
 func implementPID(pidFile string) {
 	if checkPID(pidFile) {
-		log.Fatalf("Another instance of sftp-proxy is already running. Exiting.")
+		fmt.Printf("Another instance of sftp-proxy is already running. Exiting.")
+		os.Exit(1)
 	}
 
 	err := writePID(pidFile)
 	if err != nil {
-		log.Fatalf("Unable to write PID file: %s", err)
+		fmt.Printf("Unable to write PID file: %s", err)
+		os.Exit(1)
 	}
 
 }
@@ -54,7 +56,8 @@ func checkPID(pidFile string) bool {
 
 	pid, err := strconv.Atoi(string(pidData))
 	if err != nil {
-		log.Fatalf("Invalid PID in PID file: %s", pidData)
+		fmt.Printf("Invalid PID in PID file: %s", pidData)
+		os.Exit(1)
 		return false
 	}
 

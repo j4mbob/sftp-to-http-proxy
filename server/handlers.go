@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -81,7 +80,7 @@ type customFileReader struct {
 // custom Fileread method which goes and fetches the file from the remote URL
 
 func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
-	log.Printf("client %s attempting to get: %s%s", c.clientIP, c.remoteUrl, r.Filepath)
+	fmt.Printf("client %s attempting to get: %s%s", c.clientIP, c.remoteUrl, r.Filepath)
 
 	startTime := time.Now()
 
@@ -92,7 +91,7 @@ func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		log.Printf("error getting file: %s", resp.Status)
+		fmt.Printf("error getting file: %s", resp.Status)
 		defer resp.Body.Close()
 		return nil, errors.New("file not found")
 
@@ -109,6 +108,6 @@ func (c customFileReader) Fileread(r *sftp.Request) (io.ReaderAt, error) {
 	// should we want to
 	finishTime := time.Since(startTime)
 
-	log.Printf("proxy downloaded: %s%s for client %s duration: %v", c.remoteUrl, r.Filepath, c.clientIP, finishTime)
+	fmt.Printf("proxy downloaded: %s%s for client %s duration: %v", c.remoteUrl, r.Filepath, c.clientIP, finishTime)
 	return bytes.NewReader(data), nil
 }

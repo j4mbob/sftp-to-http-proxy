@@ -3,8 +3,8 @@ package loader
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
-	"log"
 	"os"
 )
 
@@ -43,7 +43,7 @@ func argParse(arguments *Args) {
 	arguments.Pyroscope = *pyroscope
 
 	if *configFile != "none" {
-		log.Printf("loading JSON config: %s\n", *configFile)
+		fmt.Printf("loading JSON config: %s\n", *configFile)
 		loadConfig(*configFile, arguments)
 	}
 
@@ -53,8 +53,8 @@ func loadConfig(configFile string, arguments *Args) {
 	jsonFile, err := os.Open(configFile)
 
 	if err != nil {
-		log.Println(err)
-		log.Fatal(1)
+		fmt.Println(err)
+		os.Exit(1)
 
 	}
 

@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
 	cliArgs := loader.Startup()
 	server.StartProxy(cliArgs)
 }
