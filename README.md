@@ -7,7 +7,7 @@ sets up a real sftp server with custom handlers for operations which allows us t
 this works by tricking the sftp client into believing the file they requested is on the sftp servers local file system. the proxy handles the request and pulls the file 
 from a remote http(s) server and serves up the file over the established SFTP session back to the client
 
-intended to run as a systemd service on a gateway and supports concurrent sftp clients to handle multiple switches being simultanously deployed
+intended to run as a systemd service on a gateway so supports PID file handling and concurrent sftp clients to handle multiple switches being simultanously deployed
 
 ```
   -listenip string
