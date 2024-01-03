@@ -4,20 +4,17 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"strconv"
-	"syscall"
 
 	"github.com/grafana/pyroscope-go"
 )
 
 func Startup() *Args {
-	const pidFile = "/run/sftp-proxy.pid"
-
-	implementPID(pidFile)
 
 	arguments := new(Args)
 
 	argParse(arguments)
+
+	implementPID(arguments.PidFile)
 
 	if arguments.Pyroscope {
 
@@ -27,47 +24,6 @@ func Startup() *Args {
 	}
 
 	return arguments
-}
-
-func implementPID(pidFile string) {
-	if checkPID(pidFile) {
-		fmt.Printf("Another instance of sftp-proxy is already running. Exiting.")
-		os.Exit(1)
-	}
-
-	err := writePID(pidFile)
-	if err != nil {
-		fmt.Printf("Unable to write PID file: %s", err)
-		os.Exit(1)
-	}
-
-}
-
-func writePID(pidFile string) error {
-	pid := []byte(strconv.Itoa(os.Getpid()) + "\n")
-	return os.WriteFile(pidFile, pid, 0644)
-}
-
-func checkPID(pidFile string) bool {
-	pidData, err := os.ReadFile(pidFile)
-	if err != nil {
-		return false
-	}
-
-	pid, err := strconv.Atoi(string(pidData))
-	if err != nil {
-		fmt.Printf("Invalid PID in PID file: %s", pidData)
-		os.Exit(1)
-		return false
-	}
-
-	process, err := os.FindProcess(pid)
-	if err != nil {
-		return false
-	}
-
-	err = process.Signal(syscall.Signal(0))
-	return err == nil
 }
 
 func StartPyroScope(arguments *Args) {

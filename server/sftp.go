@@ -12,9 +12,9 @@ import (
 func StartProxy(cliArgs *loader.Args) {
 	sshConfig := setupServer(cliArgs.UserName, cliArgs.Password)
 
-	loadKey(sshConfig, cliArgs.SSLKey)
+	loadKey(sshConfig, cliArgs.SSLKey, cliArgs.PidFile)
 
-	listener := startListener(cliArgs.ListenIP, cliArgs.ListenPort)
+	listener := startListener(cliArgs.ListenIP, cliArgs.ListenPort, cliArgs.PidFile)
 
 	acceptConnections(listener, sshConfig, cliArgs.RemoteURL)
 
@@ -40,24 +40,24 @@ func setupServer(userName string, password string) *ssh.ServerConfig {
 	return sshConfig
 }
 
-func loadKey(config *ssh.ServerConfig, sslKey string) {
+func loadKey(config *ssh.ServerConfig, sslKey string, pidFile string) {
 	keyBytes, err := os.ReadFile(sslKey)
 	if err != nil {
 		fmt.Printf("failed to load private key: %v", err)
-		os.Exit(1)
+		loader.CleanUp(pidFile)
 	}
 
 	key, err := ssh.ParsePrivateKey(keyBytes)
 	if err != nil {
 		fmt.Printf("failed to parse private key: %v", err)
-		os.Exit(1)
+		loader.CleanUp(pidFile)
 	}
 
 	config.AddHostKey(key)
 
 }
 
-func startListener(listenIP string, listenPort string) net.Listener {
+func startListener(listenIP string, listenPort string, pidFile string) net.Listener {
 	listener, err := net.Listen("tcp", listenIP+":"+listenPort)
 	if err != nil {
 		fmt.Printf("failed to bind server: %v", err)

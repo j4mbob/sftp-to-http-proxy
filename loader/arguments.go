@@ -17,6 +17,7 @@ type Args struct {
 	RemoteURL     string `json:"remoteurl"`
 	Pyroscope     bool   `json:"pyroscope"`
 	PyroscopeHost string `json:"pyroscopehost"`
+	PidFile       string `json:"pidfile"`
 }
 
 func argParse(arguments *Args) {
@@ -28,6 +29,7 @@ func argParse(arguments *Args) {
 	remoteUrl := flag.String("remoteurl", "http://grafana.networks-util.ask4.net:8080", "remote web server to send requests to")
 	pyroscope := flag.Bool("pyroscope", false, "enable sending application metrics to pyroscope host")
 	pyroscopeHost := flag.String("pyroscopehost", "http://grafana.networks-util.ask4.net", "remote pyroscope to send application metrics to")
+	pidFile := flag.String("pidfile", "/run/sftp-proxy.pid", "PID file location to use")
 
 	configFile := flag.String("loadconfig", "none", "load json config file")
 
@@ -41,6 +43,7 @@ func argParse(arguments *Args) {
 	arguments.RemoteURL = *remoteUrl
 	arguments.PyroscopeHost = *pyroscopeHost
 	arguments.Pyroscope = *pyroscope
+	arguments.PidFile = *pidFile
 
 	if *configFile != "none" {
 		fmt.Printf("loading JSON config: %s\n", *configFile)
@@ -54,7 +57,7 @@ func loadConfig(configFile string, arguments *Args) {
 
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		CleanUp(arguments.PidFile)
 
 	}
 
