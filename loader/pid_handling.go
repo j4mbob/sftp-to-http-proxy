@@ -9,13 +9,13 @@ import (
 
 func implementPID(pidFile string) {
 	if checkPID(pidFile) {
-		fmt.Printf("Another instance of sftp-proxy is already running. Exiting.")
+		fmt.Printf("Another instance of sftp-proxy is already running. Exiting.\n")
 		os.Exit(1)
 	}
 
 	err := writePID(pidFile)
 	if err != nil {
-		fmt.Printf("Unable to write PID file: %s", err)
+		fmt.Printf("Unable to write PID file: %s\n", err)
 		os.Exit(1)
 	}
 
@@ -34,7 +34,7 @@ func checkPID(pidFile string) bool {
 
 	pid, err := strconv.Atoi(string(pidData))
 	if err != nil {
-		fmt.Printf("Invalid PID in PID file: %s", pidData)
+		fmt.Printf("Invalid PID in PID file: %s\n", pidData)
 		os.Exit(1)
 		return false
 	}
@@ -52,8 +52,8 @@ func CleanUp(pidFile string) {
 
 	err := os.Remove(pidFile)
 	if err != nil {
-		fmt.Printf("error removing PID file: %v", err)
+		fmt.Printf("error removing PID file: %v\n", err)
 	}
-	fmt.Println("exiting..")
+	fmt.Println("exiting...")
 	os.Exit(1)
 }

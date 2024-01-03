@@ -70,7 +70,7 @@ func handleRequests(requests <-chan *ssh.Request, channel ssh.Channel, server *s
 func checkServerState(channel ssh.Channel, server *sftp.RequestServer, conn net.Conn) error {
 	if err := server.Serve(); err != nil {
 		if err == io.EOF {
-			fmt.Printf("client %s closed connection", conn.RemoteAddr().String())
+			fmt.Printf("client %s closed connection\n", conn.RemoteAddr().String())
 			server.Close()
 			return nil
 		}

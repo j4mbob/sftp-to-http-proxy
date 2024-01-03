@@ -25,13 +25,13 @@ func setupServer(userName string, password string) *ssh.ServerConfig {
 		PasswordCallback: func(conn ssh.ConnMetadata, enteredPassword []byte) (*ssh.Permissions, error) {
 
 			if conn.User() == userName && string(enteredPassword) == password {
-				fmt.Printf("successful login from: %s", conn.RemoteAddr().String())
+				fmt.Printf("successful login from: %s\n", conn.RemoteAddr().String())
 
 				return nil, nil
 			} else {
-				fmt.Printf("failed login from: %s", conn.RemoteAddr().String())
+				fmt.Printf("failed login from: %s\n", conn.RemoteAddr().String())
 			}
-			errorMsg := fmt.Sprintf("password rejected for user: %s from address: %s", conn.User(), conn.RemoteAddr().String())
+			errorMsg := fmt.Sprintf("password rejected for user: %s from address: %s\n", conn.User(), conn.RemoteAddr().String())
 			return nil, fmt.Errorf(errorMsg)
 		},
 		NoClientAuth: false,
@@ -43,13 +43,13 @@ func setupServer(userName string, password string) *ssh.ServerConfig {
 func loadKey(config *ssh.ServerConfig, sslKey string, pidFile string) {
 	keyBytes, err := os.ReadFile(sslKey)
 	if err != nil {
-		fmt.Printf("failed to load private key: %v", err)
+		fmt.Printf("failed to load private key: %v\n", err)
 		loader.CleanUp(pidFile)
 	}
 
 	key, err := ssh.ParsePrivateKey(keyBytes)
 	if err != nil {
-		fmt.Printf("failed to parse private key: %v", err)
+		fmt.Printf("failed to parse private key: %v\n", err)
 		loader.CleanUp(pidFile)
 	}
 
@@ -60,10 +60,10 @@ func loadKey(config *ssh.ServerConfig, sslKey string, pidFile string) {
 func startListener(listenIP string, listenPort string, pidFile string) net.Listener {
 	listener, err := net.Listen("tcp", listenIP+":"+listenPort)
 	if err != nil {
-		fmt.Printf("failed to bind server: %v", err)
-		os.Exit(1)
+		fmt.Printf("failed to bind server: %v\n", err)
+		loader.CleanUp(pidFile)
 	} else {
-		fmt.Printf("sftp proxy listening on %s:%s", listenIP, listenPort)
+		fmt.Printf("sftp proxy listening on %s:%s\n", listenIP, listenPort)
 
 	}
 

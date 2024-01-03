@@ -18,7 +18,7 @@ func Startup() *Args {
 
 	if arguments.Pyroscope {
 
-		fmt.Printf("sending application metrics to remote pyroscope host: %s", arguments.PyroscopeHost)
+		fmt.Printf("sending application metrics to remote pyroscope host: %s\n", arguments.PyroscopeHost)
 		StartPyroScope(arguments)
 
 	}
