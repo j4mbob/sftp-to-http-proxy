@@ -26,9 +26,9 @@ func argParse(arguments *Args) {
 	userName := flag.String("username", "sftp", "username to use for authentication")
 	password := flag.String("password", "sftp", "password to use for authentication")
 	sslKey := flag.String("sslkey", "id_rsa", "ssl private key to use")
-	remoteUrl := flag.String("remoteurl", "http://grafana.networks-util.ask4.net:8080", "remote web server to send requests to")
+	remoteUrl := flag.String("remoteurl", "http://remote-webserver:8080", "remote web server to send requests to")
 	pyroscope := flag.Bool("pyroscope", false, "enable sending application metrics to pyroscope host")
-	pyroscopeHost := flag.String("pyroscopehost", "http://grafana.networks-util.ask4.net", "remote pyroscope to send application metrics to")
+	pyroscopeHost := flag.String("pyroscopehost", "http://pyroscope-host:4040", "remote pyroscope to send application metrics to")
 	pidFile := flag.String("pidfile", "/run/sftp-proxy.pid", "PID file location to use")
 
 	configFile := flag.String("loadconfig", "none", "load json config file")
