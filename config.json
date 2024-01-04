@@ -1,8 +1,8 @@
 {
         "listenip": "10.20.58.1",
         "listenport": "2122",
-        "username": "lms",
-        "password": "lms",
+        "username": "sftp",
+        "password": "sftp",
         "pidfile": "/run/sftp-proxy.pid",
         "sslkey": "/etc/ssh/ssh_host_rsa_key",
         "remoteurl": "http://remote-webserver:8080",
