@@ -1,6 +1,6 @@
-SFTP to HTTP(s) go Proxy
+# SFTP to HTTP(S) go Proxy
 
-can be used to faciliate ZTP for switches that support SFTP as a transport mechanism but not http(s)
+can be used to faciliate ZTP for switches that support SFTP as a transport mechanism but not HTTP(S)
 
 sets up a real sftp server with custom handlers for operations which allows us to back off requests to a web server
 
@@ -21,7 +21,7 @@ intended to run as a systemd service on a server so supports PID file handling a
   -pyroscope
     	enable sending application metrics to pyroscope host
   -pyroscopehost string
-    	remote pyroscope to send application metrics to (default "http://pyroschope-host:4040")
+    	remote pyroscope to send application metrics to (default "http://pyroscope-host:4040")
   -remoteurl string
     	remote web server to send requests to (default "http://remote-webserver:8080")
   -sslkey string
