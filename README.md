@@ -56,6 +56,8 @@ go build .
 
 ## Dependencies
 
+```
 github.com/pkg/sftp
 github.com/grafana/pyroscope-go
 golang.org/x/crypto
+```
