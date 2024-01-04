@@ -1,6 +1,6 @@
 SFTP to HTTP(s) go Proxy
 
-can be used to faciliate ZTP for switches that dont support TFTP and only support SFTP
+can be used to faciliate ZTP for switches that support SFTP as a transport mechanism but not http(s)
 
 sets up a real sftp server with custom handlers for operations which allows us to back off requests to a web server
 
