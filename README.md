@@ -41,3 +41,21 @@ logs to stdout and includes status of file requests and duration transfers took 
 2024/01/02 10:32:43 client 10.20.58.2:65427 attempting to get: http://remote-url:8080/S5735-L-V2_V600R022C10SPC500.cc
 2024/01/02 10:33:28 proxy downloaded: http://remote-url:8080/S5735-L-V2_V600R022C10SPC500.cc for client 10.20.58.2:65427 duration: 44.496820739s
 ```
+
+includes pyroscope client for outputing application performance metrics to a remote pyroscope host
+
+
+## Building
+
+requires minimum go version of v0.17
+
+
+```
+go build .
+```
+
+## Dependencies
+
+github.com/pkg/sftp
+github.com/grafana/pyroscope-go
+golang.org/x/crypto
